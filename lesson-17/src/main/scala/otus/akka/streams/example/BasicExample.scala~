@@ -18,4 +18,5 @@ object BasicExample extends App {
 
   done.onComplete(_ => system.terminate())
 
+  system.terminate()
 }
