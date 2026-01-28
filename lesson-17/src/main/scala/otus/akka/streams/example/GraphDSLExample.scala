@@ -27,6 +27,8 @@ object GraphDSLExample extends App {
     broadcast.out(0) ~> flow ~> zip.in0
     broadcast.out(1) ~> squareFlow ~> zip.in1
 
+    // source -> broadcast -> flow -> zip       -> Sink Foreach println
+    //                     \-> squareFlow -> zip /^ (why order not changed
     zip.out ~> Sink.foreach(println)
     ClosedShape
   }
