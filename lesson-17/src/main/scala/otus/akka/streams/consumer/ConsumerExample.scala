@@ -1,11 +1,11 @@
 package otus.akka.streams.consumer
 
-import akka.Done
-import akka.actor.ActorSystem
-import akka.kafka.scaladsl.{Committer, Consumer}
-import akka.kafka.{CommitterSettings, ConsumerSettings, Subscriptions}
-import akka.stream.RestartSettings
-import akka.stream.scaladsl.{RestartSource, Sink, Source}
+import org.apache.pekko.Done
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.kafka.scaladsl.{Committer, Consumer}
+import org.apache.pekko.kafka.{CommitterSettings, ConsumerSettings, Subscriptions}
+import org.apache.pekko.stream.RestartSettings
+import org.apache.pekko.stream.scaladsl.{RestartSource, Sink, Source}
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
 
@@ -23,7 +23,7 @@ object ConsumerExample extends App {
     .withGroupId("lesson-17-test")
     .withProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
   private val topic = system.settings.config.getConfig("kafka").getString("topic")
-  private val committerSettings: CommitterSettings = CommitterSettings(system.settings.config.getConfig("akka.kafka.committer"))
+  private val committerSettings: CommitterSettings = CommitterSettings(system.settings.config.getConfig("pekko.kafka.committer"))
   private val consumerSource: Source[Done, Consumer.Control] = Consumer
     .committableSource(consumerSettings, Subscriptions.topics(topic))
     .map { msg =>

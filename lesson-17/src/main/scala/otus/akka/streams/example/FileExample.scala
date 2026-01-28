@@ -1,8 +1,8 @@
-package otus.akka.streams.example
+package otus.org.apache.pekko.streams.example
 
-import akka.actor.ActorSystem
-import akka.stream.IOResult
-import akka.stream.scaladsl.FileIO
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.stream.IOResult
+import org.apache.pekko.stream.scaladsl.FileIO
 
 import java.nio.file.Paths
 import scala.concurrent.{ExecutionContextExecutor, Future}

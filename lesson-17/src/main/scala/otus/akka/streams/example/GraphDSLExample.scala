@@ -1,9 +1,9 @@
-package otus.akka.streams.example
+package otus.org.apache.pekko.streams.example
 
-import akka.NotUsed
-import akka.actor.ActorSystem
-import akka.stream.{ClosedShape, Graph}
-import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, RunnableGraph, Sink, Source, Zip}
+import org.apache.pekko.NotUsed
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.stream.{ClosedShape, Graph}
+import org.apache.pekko.stream.scaladsl.{Broadcast, Flow, GraphDSL, RunnableGraph, Sink, Source, Zip}
 
 import scala.concurrent.ExecutionContextExecutor
 

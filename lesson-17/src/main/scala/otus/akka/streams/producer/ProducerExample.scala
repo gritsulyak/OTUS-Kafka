@@ -1,10 +1,10 @@
-package otus.akka.streams.producer
+package otus.org.apache.pekko.streams.producer
 
-import akka.actor.ActorSystem
-import akka.kafka.ProducerSettings
-import akka.kafka.scaladsl.Producer
-import akka.stream.Attributes
-import akka.stream.scaladsl.Source
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.kafka.ProducerSettings
+import org.apache.pekko.kafka.scaladsl.Producer
+import org.apache.pekko.stream.Attributes
+import org.apache.pekko.stream.scaladsl.Source
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer
 
