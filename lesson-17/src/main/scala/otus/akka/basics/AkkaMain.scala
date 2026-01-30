@@ -1,13 +1,13 @@
-package akka_akka_streams.Akka
+package otus.akka.basics
 
-import akka.actor.typed.scaladsl.Behaviors
-import akka.actor.typed.{ActorRef, ActorSystem, Behavior, SpawnProtocol}
-import akka.util.Timeout
+import org.apache.pekko.actor.typed.scaladsl.Behaviors
+import org.apache.pekko.actor.typed.{ActorRef, ActorSystem, Behavior, SpawnProtocol}
+import org.apache.pekko.util.Timeout
 
 import scala.concurrent.ExecutionContext
-import akka.actor.typed.scaladsl.AskPattern._
-import akka.actor.typed.Props
-import akka_akka_streams.Akka.into_actors.behaviour_factory_method
+import org.apache.pekko.actor.typed.scaladsl.AskPattern._
+import org.apache.pekko.actor.typed.Props
+import otus.akka.basics.into_actors.behaviour_factory_method
 
 import scala.concurrent.Future
 import scala.language.{existentials, postfixOps}
@@ -17,7 +17,7 @@ import scala.concurrent.duration._
 object AkkaMain{
   def main(args: Array[String]): Unit ={
     val system = ActorSystem[String](behaviour_factory_method.Echo(), "Echo")
-    system ! "Hello"
+    system ! ("Hello")
 
     Thread.sleep(3000)
     system.terminate()
@@ -43,5 +43,8 @@ object AkkaMain2{
 
     for (ref <- echo)
       ref ! "Hello from ask"
+
+    system.terminate()
+
   }
 }
