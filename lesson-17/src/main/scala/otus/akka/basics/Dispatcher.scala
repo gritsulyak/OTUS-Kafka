@@ -2,19 +2,12 @@ package otus.akka.basics
 import org.apache.pekko.NotUsed
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
 import org.apache.pekko.actor.typed.{ActorRef, ActorSystem, Behavior, SpawnProtocol}
-import org.apache.pekko.util.Timeout
 
-import scala.concurrent.ExecutionContext
-import org.apache.pekko.actor.typed.scaladsl.AskPattern._
-import org.apache.pekko.actor.typed.Props
 import otus.akka.basics.Dispatcher.JsonParser.{Parse, ParseResponse}
 import otus.akka.basics.Dispatcher.LogWorker.LogResponse
 import otus.akka.basics.Dispatcher.TaskDispatcher.{LogWork, ParseUrl}
-import otus.akka.basics.into_actors.behaviour_factory_method
 
-import scala.concurrent.Future
 import scala.language.{existentials, postfixOps}
-import scala.concurrent.duration._
 import java.util.UUID
 
 object Dispatcher extends App {

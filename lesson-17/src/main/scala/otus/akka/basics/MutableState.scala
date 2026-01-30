@@ -4,9 +4,6 @@ import org.apache.pekko.NotUsed
 import org.apache.pekko.actor.typed.{ActorSystem, Behavior, Terminated}
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
 
-import scala.concurrent.Await
-import scala.concurrent.duration.Duration
-
 object MutableState extends App{
   sealed trait  Command
 
@@ -21,7 +18,7 @@ object MutableState extends App{
       var amount: Int = am
 
       Behaviors.receiveMessage{
-        case Stop() =>
+        case Stop() => // instead PoisonPill for untyped
           Behaviors.stopped
         case Deposite(v) =>
           amount = amount + v
@@ -40,9 +37,12 @@ object MutableState extends App{
 
   def apply():Behavior[NotUsed] =
     Behaviors.setup{ctx =>
+
       val account1 = ctx.spawn(Account(2000), "actor_1")
       val account2 = ctx.spawn(Account(42), "actor_2")
 
+      ctx.watch(account1)
+      ctx.watch(account2)
 
       account1 ! Get()
       account2 ! Get()
@@ -58,26 +58,21 @@ object MutableState extends App{
       account2 ! Stop()
       account1 ! Stop() // Сообщение встанет в конец очереди после всех Withdraw
 
-
       // Используем переменную для отслеживания количества живых акторов
       var stoppedChildren = 0
-
-      Behaviors.receiveSignal {
+      def waitTermination(count: Int): Behavior[NotUsed] = Behaviors.receiveSignal {
         case (context, Terminated(ref)) =>
-          stoppedChildren += 1
-          // Завершаем систему только когда ОБА актора прислали Terminated
-          if (stoppedChildren == 2) {
-            context.log.info("Все акторы остановлены. Выключаем систему...")
-            context.system.terminate()
+          val remaining = count - 1
+          if (remaining == 0)
             Behaviors.stopped
-          } else {
-            Behaviors.same
-          }
+          else
+            waitTermination(remaining)
       }
+      waitTermination(2)
     }
 
   implicit val system = ActorSystem(MutableState(), "akka_typed")
 
-  //Await.ready(system.whenTerminated, Duration.Inf)
+  // Await.ready(system.whenTerminated, Duration.Inf)
 
 }
