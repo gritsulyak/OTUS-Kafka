@@ -22,7 +22,7 @@ object  into_actors{
 
 
   //2. OOP
-  object abstarct_behaviour {
+  object abstract_behaviour {
     class Echo(ctx: ActorContext[String]) extends AbstractBehavior[String](ctx) {
       override def onMessage(msg: String): Behavior[String] = {
         ctx.log.info(msg)

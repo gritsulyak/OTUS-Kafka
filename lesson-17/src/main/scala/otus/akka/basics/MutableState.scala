@@ -59,7 +59,6 @@ object MutableState extends App{
       account1 ! Stop() // Сообщение встанет в конец очереди после всех Withdraw
 
       // Используем переменную для отслеживания количества живых акторов
-      var stoppedChildren = 0
       def waitTermination(count: Int): Behavior[NotUsed] = Behaviors.receiveSignal {
         case (context, Terminated(ref)) =>
           val remaining = count - 1

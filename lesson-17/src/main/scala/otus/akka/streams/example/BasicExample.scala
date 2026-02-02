@@ -8,7 +8,7 @@ import scala.concurrent.{ExecutionContextExecutor, Future}
 
 object BasicExample extends App {
   implicit val system: ActorSystem = ActorSystem()
- implicit val ec: ExecutionContextExecutor = system.dispatcher
+  implicit val ec: ExecutionContextExecutor = system.dispatcher
 
   private val source: Source[Int, NotUsed] = Source(1 to 100000)
   private val flow: Flow[Int, Int, NotUsed] = Flow.fromFunction(_ + 1)
