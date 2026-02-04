@@ -10,7 +10,7 @@ object BasicExample extends App {
   implicit val system: ActorSystem = ActorSystem()
   implicit val ec: ExecutionContextExecutor = system.dispatcher
 
-  private val source: Source[Int, NotUsed] = Source(1 to 100000)
+  private val source: Source[Int, NotUsed] = Source(1 to 1000000)
   private val flow: Flow[Int, Int, NotUsed] = Flow.fromFunction(_ + 1)
   private val sink: Sink[Int, Future[Done]] = Sink.foreach(println)
 

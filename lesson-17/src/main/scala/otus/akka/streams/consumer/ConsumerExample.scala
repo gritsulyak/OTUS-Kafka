@@ -31,8 +31,9 @@ object ConsumerExample extends App {
       msg.committableOffset
     }
     .via(Committer.flow(committerSettings.withMaxBatch(1)))
-  private val restartSettings = RestartSettings(minBackoff = 3.seconds, maxBackoff = 30.seconds, randomFactor = 0.2)
 
+  // thundering herd
+  private val restartSettings = RestartSettings(minBackoff = 3.seconds, maxBackoff = 30.seconds, randomFactor = 0.2)
 
   RestartSource
     .onFailuresWithBackoff(restartSettings) { () =>

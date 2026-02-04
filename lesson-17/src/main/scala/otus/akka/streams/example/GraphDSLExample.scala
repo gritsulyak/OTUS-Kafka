@@ -4,6 +4,7 @@ import org.apache.pekko.NotUsed
 import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.stream.{ClosedShape, Graph}
 import org.apache.pekko.stream.scaladsl.{Broadcast, Flow, GraphDSL, RunnableGraph, Sink, Source, Zip}
+import otus.org.apache.pekko.streams.example.BasicExample.{flow, sink, source, system}
 
 import scala.concurrent.ExecutionContextExecutor
 
@@ -15,7 +16,7 @@ object GraphDSLExample extends App {
     import GraphDSL.Implicits._
 
     val broadcast = builder.add(Broadcast[Int](2))
-    val source: Source[Int, NotUsed] = Source(1 to 100)
+    val source: Source[Int, NotUsed] = Source(1 to 100000)
 
     source ~> broadcast
 
@@ -27,12 +28,15 @@ object GraphDSLExample extends App {
     broadcast.out(0) ~> flow ~> zip.in0
     broadcast.out(1) ~> squareFlow ~> zip.in1
 
-    // source -> broadcast -> flow -> zip       -> Sink Foreach println
-    //                     \-> squareFlow -> zip /^ (why order not changed
+    // source -> broadcast -> flow ->        zip       -> Sink Foreach println
+    //                     \-> squareFlow  /^ (why order not changed
     zip.out ~> Sink.foreach(println)
     ClosedShape
   }
 
-  RunnableGraph.fromGraph(graph).run()
+  var done = RunnableGraph.fromGraph(graph).run()
+
+  Thread.sleep(3000)
+
   system.terminate()
 }
