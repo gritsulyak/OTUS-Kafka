@@ -1,18 +1,18 @@
 package otus.org.apache.pekko.streams.example
 
-import org.apache.pekko.NotUsed
+import org.apache.pekko.{Done, NotUsed}
 import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.stream.{ClosedShape, Graph}
 import org.apache.pekko.stream.scaladsl.{Broadcast, Flow, GraphDSL, RunnableGraph, Sink, Source, Zip}
-import otus.org.apache.pekko.streams.example.BasicExample.{flow, sink, source, system}
 
-import scala.concurrent.ExecutionContextExecutor
+import scala.concurrent.{ExecutionContextExecutor, Future}
 
 object GraphDSLExample extends App {
   implicit val system: ActorSystem = ActorSystem()
   implicit val ec: ExecutionContextExecutor = system.dispatcher
 
-  private val graph: Graph[ClosedShape.type, NotUsed] = GraphDSL.create() { implicit builder =>
+  private val graph: Graph[ClosedShape.type, Future[Done]] =
+    GraphDSL.createGraph(Sink.foreach(println)){ implicit builder => sink =>
     import GraphDSL.Implicits._
 
     val broadcast = builder.add(Broadcast[Int](2))
@@ -30,13 +30,10 @@ object GraphDSLExample extends App {
 
     // source -> broadcast -> flow ->        zip       -> Sink Foreach println
     //                     \-> squareFlow  /^ (why order not changed
-    zip.out ~> Sink.foreach(println)
+    zip.out ~> sink
     ClosedShape
   }
 
   var done = RunnableGraph.fromGraph(graph).run()
-
-  Thread.sleep(3000)
-
-  system.terminate()
+  done.onComplete(_ => system.terminate())
 }
