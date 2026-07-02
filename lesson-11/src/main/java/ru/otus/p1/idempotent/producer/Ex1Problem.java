@@ -17,6 +17,7 @@ public class Ex1Problem {
             producer.start();
 
             // Несколько раз убиваем tcp-коннект на порт 9092 (например https://www.nirsoft.net/utils/cports.html)
+            // - closed net connection sudo iptables -A OUTPUT -p tcp --dport 9092 -j DROP
             Thread.sleep(600000);
 
         }

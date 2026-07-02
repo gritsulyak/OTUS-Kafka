@@ -3,8 +3,8 @@ package ru.otus.p2.transactions;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import ru.otus.utils.Utils;
 import ru.otus.utils.LoggingConsumer;
+import ru.otus.utils.Utils;
 
 public class Ex5Transaction {
     public static void main(String[] args) throws Exception {

@@ -50,15 +50,16 @@ public class Producer implements AutoCloseable {
                 var record = new ProducerRecord<>(topic, key, "some data");
                 producer.send(record, (metadata, exception) -> {
                     if (exception != null) {
+                        Utils.log.info("exception {}" , exception);
                         Utils.log.info("Sender to {} CANT send {}", topic, key);
                     } else {
                         lastSend.set(savedI);
                     }
                 });
-                //Thread.sleep(1);
+                // Thread.sleep(1);
                 if (i % 100000 == 0) {
-                    //Utils.log.info("Sender to {} sent {}", topic, i);
-                    //Thread.sleep(100);
+                    Utils.log.info("Sender to {} sent {}", topic, i);
+                    Thread.sleep(100);
                 }
                 if (lastReceived != null) {
                     int counter = 0;
@@ -68,7 +69,7 @@ public class Producer implements AutoCloseable {
                         counter += 1;
                     }
                     if (counter > 0) {
-                        //Utils.log.info("Sender to {} sent {}, SLEEP", topic, i);
+                        // Utils.log.info("Sender to {} sent {}, SLEEP", topic, i);
                     }
 
                 }
